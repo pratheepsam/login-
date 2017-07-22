@@ -75,7 +75,9 @@ public class RestGet {
             } catch (Exception e) {
                 Log.e("Buffer Error", "Error converting result " + e.toString());
             }
+            System.out.println(json);
             return json;
+
         }
     }
 

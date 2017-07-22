@@ -6,11 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.login.Login"
     android:orientation="vertical">
-    <TextView
-        android:id="@+id/viewuser"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"/>
+
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"

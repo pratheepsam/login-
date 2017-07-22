@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,23 +15,20 @@ import java.util.List;
 
 
 public class Login extends AppCompatActivity {
-    TextView  text;
-    ListView list;
 
+    ListView list;
+    List<Enemy> eList = new ArrayList<>();
+    CustomAdapter customAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        text = (TextView) findViewById(R.id.viewuser);
-        list = (ListView) findViewById(R.id.list_view);
-        List<String> todoItems = new ArrayList<>();
-        todoItems.add("Sathish");
-        todoItems.add("Pradeep");
-        todoItems.add("Bharath");
+        setContentView(R.layout.enimies_list);
+        list = (ListView) findViewById(R.id.enemyName);
+        customAdapter = new CustomAdapter(getApplicationContext(), eList);
+        list.setAdapter(customAdapter);
 
-        final ArrayAdapter<String> aa;
-        aa = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems);
-        list.setAdapter(aa);
+
+        //list.setAdapter(aa);
         /*LoginList loginsuccess = new LoginList();
         loginsuccess.execute();*/
         RestGet restGet = new RestGet(new OnHttpResponseListener() {
@@ -38,8 +36,22 @@ public class Login extends AppCompatActivity {
             public void onResponseCallback(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    String location = jsonObject.getString("location");
-                    text.setText(location);
+                   // System.out.println(jsonObject);
+
+                    JSONArray enemies = jsonObject.getJSONArray("enemies");
+
+                    for (int i =0; i<enemies.length();i++){
+
+                        Enemy enemy = new Enemy();
+                        JSONObject obj = enemies.getJSONObject(i);
+                        enemy.setName(obj.getString("name"));
+                        enemy.setDamage_high_range(obj.getString("damage_high_range"));
+                        eList.add(enemy);
+
+                    }
+                    customAdapter.notifyDataSetChanged();
+
+                    System.out.print(eList);
 
                 }
                 catch (JSONException e){
